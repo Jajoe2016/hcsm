@@ -8,16 +8,16 @@ import Button from '@mui/material/Button';
 import { FormControl, ThemeProvider } from '@mui/material';
 import theme from '../../reusables/theme';
 
-async function loginUser(credentials) {
-    return fetch('http://localhost:3001/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    })
-      .then(data => data.json())
-   }
+const loginUser = async (credentials) => {
+  const data = await fetch('http://localhost:3001/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+  return await data.json()
+ }
 
 export default function Login({ setToken }) {
   const [username, setUserName] = useState();

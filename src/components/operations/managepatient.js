@@ -1,6 +1,9 @@
 import React, { useState }from 'react';
 import Container from '../../reusables/container';
-// import Modal from './Modalpopups'
+import OutlinedCard from './card';
+import DataTable from '../../reusables/table'
+import useFetch from '../Helpers/useFetch';
+
 
 //ui imports
 import TextField from '@mui/material/TextField';
@@ -8,8 +11,7 @@ import Button from '@mui/material/Button';
 import { FormControl, FormLabel, ThemeProvider, Stack } from '@mui/material';
 import theme from '../../reusables/theme';
 
-async function createUser(userData){
-
+const createUser = async(userData)=>{
   return fetch('http://localhost:3001/createuser', {
       method: 'POST',
       headers: {
@@ -20,6 +22,15 @@ async function createUser(userData){
       .then(data => data.json())
   
 }
+
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'username', headerName: 'User Name', width: 130 },
+  { field: 'type', headerName: 'Account Type', width: 130 },
+  { field: 'email', headerName: 'Email', width: 400 }
+];
+
+
 function ManagePatient() {
   const [id, setId] = useState();
   const [username, setUserName] = useState();
@@ -33,11 +44,12 @@ function ManagePatient() {
     const data = await createUser({ "id": id, "username" : username, "password" : password, "email": email, "type" : accountType });
     setStatusCode(data.code);
   }
-
+  
   async function handleButton() {
-  //  const ret = createUserForm();
   setOperationcode(1);
   }
+
+  const {loading,data} = useFetch("http://localhost:3001/getusers");
 
   if ( operationcode == 1) {
     return (
@@ -73,13 +85,15 @@ function ManagePatient() {
     <Button variant="contained" sx={{mb: 3}} color='neutral' type="submit">Add New Patient</Button>
     <Button variant="contained" sx={{mb: 3}} color='neutral' type="submit">Remove Patient</Button>
     </form>
+    <OutlinedCard/>
     <p> Operation was succesful!</p>
     </div> 
     </Container>
     </React.Fragment>
     )
   }
-
+  
+    
   return(
     <Container>       
         <ThemeProvider theme={theme}>
@@ -88,6 +102,10 @@ function ManagePatient() {
           <Button variant="contained" sx={{mb: 3}} color='neutral' type="submit">Add New Patient</Button>
           <Button variant="contained" sx={{mb: 3}} color='neutral' type="submit">Remove Patient</Button>
           </form>
+          <OutlinedCard/>
+          <p>All Patiets</p>
+          <div> { loading ? <div>Loading...</div> : <DataTable rows={data} columns={columns}/> }</div>
+          
         </ThemeProvider>
       </Container>
   );

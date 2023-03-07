@@ -8,6 +8,7 @@ export default function Logout({ setToken }) {
   const token = useState();
   setToken(undefined)
   sessionStorage.removeItem('tokenFromLocalStore');
+  window.location.assign('/');
 
   return(
     <React.Fragment>

@@ -51,7 +51,7 @@ const getUser = (request, response) => {
 }
 
 const getUsers = (request, response) => {
-    pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+    pool.query('SELECT * FROM sms.users ORDER BY id ASC', (error, results) => {
       if (error) {
         throw error
       }

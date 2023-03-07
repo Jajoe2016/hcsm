@@ -53,7 +53,10 @@ function App() {
             <Route path="/" element={<Home />}> </Route>
             <Route path="/account" element={<Account />}> </Route>
             <Route path="/managepatients" element={<ManagePatient />}> </Route>
+            { tokenFromLocalStore && 
             <Route path="/logout" element={<Logout setToken={setToken}/>}> </Route>
+            }
+            
           </Routes>
         </Router>
         </div>

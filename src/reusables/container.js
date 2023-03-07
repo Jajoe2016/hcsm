@@ -50,34 +50,40 @@ class Container extends React.Component {
     }
     
     sidebar = () => {
-        const navigate = (destination) => {
-            window.location.assign(destination);
+        const tokenFromLocalStore =  sessionStorage.getItem('tokenFromLocalStore');
+        if (!tokenFromLocalStore) {
+        return(<div></div>);
         }
-        return (
-            <ThemeProvider theme={theme}>
-            <Drawer open={this.state.menuOpen}
-            onClose={() => {this.setState({menuOpen: false})}}>
-                <ListItem>
-                    <ListItemButton onClick={() => {navigate("/")}}>
-                        <ListItemText primary={"Home"}> </ListItemText>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem Button onClick={() => {navigate("/account")}}>
-                <Button color="inherit">Account</Button>
-                </ListItem>
-                <ListItem>
-                    <ListItemButton onClick={() => {navigate("/managepatients")}}>
-                        <ListItemText primary={"ManagePatient"}> </ListItemText>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem>
-                    <ListItemButton onClick={() => {navigate("/logout")}}>
-                        <ListItemText primary={"Logout"}> </ListItemText>
-                    </ListItemButton>
-                </ListItem>
-            </Drawer>
-            </ThemeProvider>
-        )
+        else{
+            const navigate = (destination) => {
+                window.location.assign(destination);
+            }
+            return (
+                <ThemeProvider theme={theme}>
+                <Drawer open={this.state.menuOpen}
+                onClose={() => {this.setState({menuOpen: false})}}>
+                    <ListItem>
+                        <ListItemButton onClick={() => {navigate("/")}}>
+                            <ListItemText primary={"Home"}> </ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem Button onClick={() => {navigate("/account")}}>
+                    <Button color="inherit">Account</Button>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemButton onClick={() => {navigate("/managepatients")}}>
+                            <ListItemText primary={"ManagePatient"}> </ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemButton onClick={() => {navigate("/logout")}}>
+                            <ListItemText primary={"Logout"}> </ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+                </Drawer>
+                </ThemeProvider>
+            )
+        }
     }
     header = () => {
         return (
