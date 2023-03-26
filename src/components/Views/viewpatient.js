@@ -23,28 +23,18 @@ async function updateUser(body) {
       .then(data => data.json())
    }
 
-export default function Account() {
-  // const [username, setUserName] = useState();
+export default function ViewPatient(username) {
   const [password, setPassword] = useState();
-  // const [id, setId] = useState();
   const [email, setEmail] = useState();
   
-  const body = {"username" : `${sessionStorage.getItem('userFromLocalStore')}`};
+  const body = {"username" : username};
   const {loading,data} = useFetchPost("http://localhost:3001/getuser", body);
-  // if (!loading )  
-  // {  setPassword(data[0].password)
-  //   setEmail(data[0].email)
-  // } 
- 
-
+  
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log(password)
-    console.log(email)
     if (password == undefined) setPassword(data[0].password)
     if (email == undefined) setEmail(data[0].email)
     const dataupd = await updateUser({ "username" : `${sessionStorage.getItem('userFromLocalStore')}`, "password" : password, "email": email});
-    // setStatusCode(dataupd.code);
   };
 
   const handleAfterLoad = () => {
@@ -53,7 +43,7 @@ export default function Account() {
   }
 
     return (
-          <Container>       
+      <React.Fragment> 
             <ThemeProvider theme={theme}>
             <Typography variant="subtitle1" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Box sx={{ width: 500, height: 50 }}> This is your account details. Click save to update</Box>
@@ -75,6 +65,6 @@ export default function Account() {
           </form>
           </Typography>
           </ThemeProvider>
-          </Container>
+          </React.Fragment>
         )
 }

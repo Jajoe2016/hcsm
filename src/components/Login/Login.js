@@ -23,7 +23,6 @@ export default function Login({ setToken }) {
   const [username, setUserName] = useState();
   const [usernameError, setUserNameError] = useState(false);
   const [password, setPassword] = useState();
-  const token = useState();
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -34,7 +33,10 @@ export default function Login({ setToken }) {
     const data = await loginUser({ "username" : username, "password" : password });
     if (data.token) setToken(data.token);
     else setToken('-1');
-    if (data.token !== "-1") sessionStorage.setItem('tokenFromLocalStore', data.token);
+    if (data.token !== "-1") {
+      sessionStorage.setItem('tokenFromLocalStore', data.token);
+      sessionStorage.setItem('userFromLocalStore', data.username);
+    }
   }
 
   return(

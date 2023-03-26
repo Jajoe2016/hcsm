@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes,Route, Link} from 'react-router-dom';
 import Home from '../Views/home';
 import Account from '../Views/account';
+import ViewPatients from '../Views/viewpatients';
 import ManagePatient from '../operations/managepatient'
+
 // import Preferences from '../Preferences/Preferences';
 // import Operations from '../Operations/Operations'
 import Login from '../Login/Login';
@@ -53,6 +55,7 @@ function App() {
             <Route path="/" element={<Home />}> </Route>
             <Route path="/account" element={<Account />}> </Route>
             <Route path="/managepatients" element={<ManagePatient />}> </Route>
+            <Route path="/viewpatients" element={<ViewPatients />}> </Route>
             { tokenFromLocalStore && 
             <Route path="/logout" element={<Logout setToken={setToken}/>}> </Route>
             }

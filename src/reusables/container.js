@@ -76,6 +76,11 @@ class Container extends React.Component {
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
+                        <ListItemButton onClick={() => {navigate("/viewpatients")}}>
+                            <ListItemText primary={"ViewPatients"}> </ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem>
                         <ListItemButton onClick={() => {navigate("/logout")}}>
                             <ListItemText primary={"Logout"}> </ListItemText>
                         </ListItemButton>
@@ -132,7 +137,7 @@ class Container extends React.Component {
         return(<div>
             {this.sidebar()}
             {this.header()}
-            <div style={{height: '80vh'}}>{this.props.children}</div>
+            <div style={{minheight: '100vh'}}>{this.props.children}</div>
             {this.footer()}
         </div>)
     }
