@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes,Route, Link} from 'react-router-dom';
 import Home from '../Views/home';
-import Account from '../Views/account';
-import ViewPatients from '../Views/viewpatients';
-import ManagePatient from '../operations/managepatient'
+import Account from '../operations/account';
+import ManagePatients from '../operations/managepatients';
+import ManageAppt from '../operations/manageappt'
 
-// import Preferences from '../Preferences/Preferences';
-// import Operations from '../Operations/Operations'
 import Login from '../Login/Login';
 import Logout from '../Login/Logout';
 import Container from '../../reusables/container';
@@ -54,8 +52,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}> </Route>
             <Route path="/account" element={<Account />}> </Route>
-            <Route path="/managepatients" element={<ManagePatient />}> </Route>
-            <Route path="/viewpatients" element={<ViewPatients />}> </Route>
+            <Route path="/manageappointments" element={<ManageAppt />}> </Route>
+            <Route path="/managepatients" element={<ManagePatients />}> </Route>
             { tokenFromLocalStore && 
             <Route path="/logout" element={<Logout setToken={setToken}/>}> </Route>
             }

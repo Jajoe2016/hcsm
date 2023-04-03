@@ -180,6 +180,20 @@ const createAppt = (request, response) => {
   })
 }
 
+const updateAppt = (request, response) => {
+  const req_body = request.body;
+  console.log(`query req body:`, req_body);
+  pool.query(`UPDATE sms.appointments SET datetime = $2, doctor = $3 WHERE id = $1`,[req_body.id, req_body.date, req_body.doctor], (error, results) => {
+    if (error) {
+      // console.log(`query results error: `, error )
+    }
+    if ( results ) {
+    // console.log(`query results rows: `, results )
+    response.status(200).json(results.rows)
+    }
+  })
+}
+
 const getTodaysAppts = (request, response) => {
   const req_body = request.body;
   // console.log(`query req body:`, req_body);
@@ -219,6 +233,7 @@ module.exports = {
   updateUser,
   deleteUser,
   createAppt,
+  updateAppt,
   getTodaysAppts,
   getAllAppts
 }

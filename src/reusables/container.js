@@ -38,8 +38,8 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 
 
 import Home from '../components/Views/home';
-import Account from '../components/Views/account'
-import ManagePatient from '../components/operations/managepatient';
+import Account from '../components/operations/account'
+import ManagePatient from '../components/operations/manageappt';
 ;
 class Container extends React.Component {
     constructor(props){
@@ -67,24 +67,35 @@ class Container extends React.Component {
                             <ListItemText primary={"Home"}> </ListItemText>
                         </ListItemButton>
                     </ListItem>
-                    <ListItem Button onClick={() => {navigate("/account")}}>
-                    <Button color="inherit">Account</Button>
+
+                    <ListItem>
+                        <ListItemButton onClick={() => {navigate("/account")}}>
+                            <ListItemText primary={"Account"}> </ListItemText>
+                        </ListItemButton>
                     </ListItem>
+
+                    {/* <ListItem Button onClick={() => {navigate("/account")}}>
+                    <Button color="inherit">Account</Button>
+                    </ListItem> */}
+
+                    <ListItem>
+                        <ListItemButton onClick={() => {navigate("/manageappointments")}}>
+                            <ListItemText primary={"ManageAppts"}> </ListItemText>
+                        </ListItemButton>
+                    </ListItem>
+
                     <ListItem>
                         <ListItemButton onClick={() => {navigate("/managepatients")}}>
-                            <ListItemText primary={"ManagePatient"}> </ListItemText>
+                            <ListItemText primary={"ManagePatients"}> </ListItemText>
                         </ListItemButton>
                     </ListItem>
-                    <ListItem>
-                        <ListItemButton onClick={() => {navigate("/viewpatients")}}>
-                            <ListItemText primary={"ViewPatients"}> </ListItemText>
-                        </ListItemButton>
-                    </ListItem>
+
                     <ListItem>
                         <ListItemButton onClick={() => {navigate("/logout")}}>
                             <ListItemText primary={"Logout"}> </ListItemText>
                         </ListItemButton>
                     </ListItem>
+                    
                 </Drawer>
                 </ThemeProvider>
             )
