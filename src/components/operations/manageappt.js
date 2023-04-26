@@ -2,8 +2,8 @@ import React, { useState }from 'react';
 import {format, parseISO} from 'date-fns';
 import Container from '../../reusables/container';
 import OutlinedCard from '../../reusables/card';
-import Patient from '../../reusables/patient';
 import DataTable from '../../reusables/table';
+import HorizontalNonLinearStepper from '../../reusables/linearstepper';
 import useFetch from '../Helpers/useFetch';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -14,11 +14,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { FormControl, ThemeProvider, Stack } from '@mui/material';
 import theme from '../../reusables/theme';
-import { GridRowParams } from '@mui/x-data-grid';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+// import { GridRowParams } from '@mui/x-data-grid';
+// import Tab from '@mui/material/Tab';
+// import TabContext from '@mui/lab/TabContext';
+// import TabList from '@mui/lab/TabList';
+// import TabPanel from '@mui/lab/TabPanel';
+
 
 const createPatient = async(patientData)=>{
   return fetch('http://localhost:3001/createpatient', {
@@ -56,18 +57,18 @@ const updateAppointment = async(apptData)=>{
   
 }
 
-const getUser = async(userData)=>{
-  return fetch('http://localhost:3001/getuser', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
-    })
-      .then(data => data.json())
-}
+// const getUser = async(userData)=>{
+//   return fetch('http://localhost:3001/getuser', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(userData)
+//     })
+//       .then(data => data.json())
+// }
 
-
+// var horizontalStepsObject = {};
 
 function ManageAppt() {
   const [cardActionClicked, setcardActionClicked] = useState(false);
@@ -82,18 +83,18 @@ function ManageAppt() {
   const [doctor, setDoctor] = useState();
   const [operationcode, setOperationcode] = useState();
   const [statusCode, setStatusCode] = useState();
-  const [apptStatus, setApptStatus] = useState('NOT STARTED');
+  const [apptStatus, setApptStatus] = useState();
   const [table, setTable] = useState('today');
+  // const [tableLength, setTableLength] = useState(0);
   const [date, setDate] = useState();
 
   const [tabValue, setTabValue] = useState('1');
-  
-
-  
+  if ( apptStatus == null) setApptStatus('NOT STARTED');
   var todayTableRows;
   var todayTableLoading;
   var allTableRows;
   var allTableLoading;
+  var tableLength;
 
   let columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -127,54 +128,72 @@ function ManageAppt() {
   var {loading,data} = useFetch("http://localhost:3001/getallappts");
   allTableRows = data;
   allTableLoading = loading;
-  
+
+  const formatDate = (date) => {
+    if (!date) return format(new Date(), 'yyyy-MM-dd kk:mm:ss' );
+    else return format(parseISO(date), 'yyyy-MM-dd kk:mm:ss' );
+  }
   const changeTableData = () => {
     if (table == 'today') {
       setTable('all');
+      tableLength = allTableRows.length;
     }
-    else setTable('today');
+    else { 
+      setTable('today');
+      tableLength = todayTableRows.length;
+    }
 }
+
 
   var tableAppt = 
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 100, sm: 300, md: 0 }}>
-                <Typography variant="subtitle1" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-              { 
-                table == 'today' ? <div> Today's Appointments </div> : <div> All Appointments</div>
-              }
-                </Typography>
-                <Button size="small" onClick={changeTableData}>Click here to switch between today and all appointments. </Button>
-                
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 100, sm: 300, md: 0 }}>
-                  <div> { 
-                  table == 'today' ? (todayTableLoading ? <CircularProgress/> : <DataTable rows={todayTableRows} columns={columns}/>)
-                    : (allTableLoading ? <CircularProgress/> : <DataTable rows={allTableRows} columns={columns}/>)
-                   }</div>
-                </Grid>
-              </Grid>
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 100, sm: 300, md: 0 }}>
+                  <Typography variant="subtitle1" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                { 
+                  table == 'today' ? <div> Today's Appointments </div> : <div> All Appointments</div>
+                }
+                  </Typography>
+                  <Button size="small" onClick={changeTableData}>Click here to switch between today and all appointments. </Button>
+                  
+                  <Grid container rowSpacing={1} columnSpacing={{ xs: 100, sm: 300, md: 0 }}>
+                    <div> { 
+                    table == 'today' ? (todayTableLoading ? <CircularProgress/> : <DataTable rows={todayTableRows} columns={columns}/>)
+                      : (allTableLoading ? <CircularProgress/> : <DataTable rows={allTableRows} columns={columns}/>)
+                    }</div>
+                  </Grid>
+          </Grid>
+       
+  var stepLabels = ['Reception', 'Doctor Exam', 'Payment', 'Lab','Finalize Visit' ];
+  var rowDetails = [id,]
+  var horizontalSteps = 
+        <div>
+          <HorizontalNonLinearStepper steps = {stepLabels}/>
+        </div>
 
-const renderDetailsButton = (row) => {
-  // console.log('button clicked');
-  // console.log(row);
-  // console.log(format(parseISO(row.datetime), 'yyyy-MM-dd kk:mm:ss' ));
-  setOperationcode(3);
-  setId(row.id);
-  setMRN(row.mrn);
-  setDoctor(row.doctor);
-  setDate(row.datetime);
-  setApptStatus('STARTED');
-}
+  const renderDetailsButton = (row) => {
+    setOperationcode(3);
+    if (row.id) setId(row.id);
+    if (row.mrn) setMRN(row.mrn);
+    if (row.doctor) setDoctor(row.doctor);
+    if (row.datetime) setDate(row.datetime);
+  }
 
-const renderProgressButton = (row) => {
-  setOperationcode(4);
-  setId(row.id);
-  setMRN(row.mrn);
-  setDoctor(row.doctor);
-  setDate(row.datetime);
-  setApptStatus('STARTED');
-}
+  const renderProgressButton = (row) => {
+    setOperationcode(4);
+    if (row.id) setId(row.id);
+    if (row.mrn) setMRN(row.mrn);
+    if (row.doctor) setDoctor(row.doctor);
+    if (row.datetime) setDate(row.datetime);
+    row.status = 'STARTED';
 
-async function resetApptUpdate() {
-  // console.log('cancel button clicked');
+    // var apptSteps = 
+    //     <div>
+    //       <HorizontalNonLinearStepper steps={stepLabels}/>
+    //     </div>
+    // console.log(apptSteps);
+    // horizontalStepsObject = {...horizontalStepsObject, ...{id : apptSteps}};
+  }
+
+  async function resetApptUpdate() {
   setOperationcode(0);
   setId(null);
   setMRN(null);
@@ -273,7 +292,7 @@ async function resetApptUpdate() {
           </Box>
           
           { operationcode === 3 ? 
-          <Box sx={{ flexGrow: 1, width: 1000, height: 200}}>
+          <Box sx={{ flexGrow: 1, width: 1000, height: 200, backgroundColor: 'bgs.main'}}>
           <form onSubmit={handleApptUpdate} onReset={resetApptUpdate}>
             <FormControl>
               <Stack spacing={2} direction="row" sx={{marginBottom: 2}}>
@@ -281,7 +300,7 @@ async function resetApptUpdate() {
                 <TextField value={mrn} name="mrn" label='patient mrn' required sx={{mb: 1}} variant='filled' size='small' type='string' color='neutral'></TextField>
                 <TextField value={doctor} name="Doctor" label='Doctor username' required sx={{mb: 1}} variant='filled' size='small' type='string' color='neutral'onChange={e => setDoctor(e.target.value)}></TextField>
               </Stack>
-              <TextField value={format(parseISO(date), 'yyyy-MM-dd kk:mm:ss' )} name="date" label="Date and time" required sx={{mb: 1}} min="2018-06-07T00:00" variant='outlined' size='medium' type="datetime-local" color='neutral' onChange={e => setDate(e.target.value)}></TextField>
+              <TextField value={formatDate(date)} required sx={{mb: 1}} min="2018-06-07T00:00" variant='outlined' size='medium' type="datetime-local" color='neutral' onChange={e => setDate(e.target.value)}></TextField>
               <Stack spacing={2} direction="row">
                 <Button variant="contained" color='neutral' type="submit">Update Appointment</Button>
                 <Button variant="contained" color='neutral' type="reset">Cancel</Button>
@@ -290,39 +309,15 @@ async function resetApptUpdate() {
           </form>
         </Box>  : 
           <div> </div>
-          }
-
+          } 
+          
           { operationcode === 4 ? 
-            <Box sx={{ flexGrow: 1, height: 300}}>
-             <Typography variant="subtitle1" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                Patient is currently: {apptStatus}
-              </Typography>
-              <TabContext value={tabValue}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                  <TabList onChange={handleTabChange} >
-                    <Tab label="Reception Triage" value="1" />
-                    <Tab label="Doctor Examination1" value="2" />
-                    <Tab label="Payment clerk" value="3" />
-                    <Tab label="Lab" value="4" />
-                    <Tab label="Doctor Examination2" value="5" />
-                    <Tab label="Finalize Visit" value="6" />
-                    <Tab label="Patient Details" value="7" />
-                  </TabList>
-                </Box>
-                <TabPanel value="1">Patient Currently in Reception</TabPanel>
-                <TabPanel value="2">Patient Currently in Doc Exam room</TabPanel>
-                <TabPanel value="3">Patient Currently in Payment</TabPanel>
-                <TabPanel value="4">Patient Currently in Lab</TabPanel>
-                <TabPanel value="5">Patient Currently in Doc Exam</TabPanel>
-                <TabPanel value="6">Patient Currently in Final Visit stage</TabPanel>
-                <TabPanel value="7">Patient Details</TabPanel>
-
-              </TabContext>
-            </Box>  : 
-              <div> </div>
+          <div> {horizontalSteps}</div>
+          :
+          <div> </div>
           }
 
-          <Box sx={{ flexGrow: 1, width: 1000}}>{tableAppt}</Box>
+          <Box sx={{ flexGrow: 1, width: '100%', backgroundColor: 'bgs.main'}}>{tableAppt}</Box>
         </ThemeProvider>
       </Container>
   );

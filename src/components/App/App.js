@@ -18,9 +18,9 @@ import theme from '../../reusables/theme';
 function App() {
     const [token, setToken] = useState();
     const tokenFromLocalStore =  sessionStorage.getItem('tokenFromLocalStore');
-    console.log(`from router token: `,token);
-    console.log(`from router  sessionStorage`,  sessionStorage);
-    console.log(`from router: tokenFromLocalStore`,tokenFromLocalStore);
+    // console.log(`from router token: `,token);
+    // console.log(`from router  sessionStorage`,  sessionStorage);
+    // console.log(`from router: tokenFromLocalStore`,tokenFromLocalStore);
 
     if (!tokenFromLocalStore || tokenFromLocalStore == null) {
         if(token === undefined) {

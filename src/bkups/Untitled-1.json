@@ -1,0 +1,7 @@
+'{
+"Reception" : {"completed" : 0, "comments" : " "},
+"Doctor Exam" : {"completed" : 0, "comments" : " "},
+"Payment" : {"completed" : 0, "comments" : " "},
+"Lab" : {"completed" : 0, "comments" : " "},
+"Finalize Visit" : {"completed" : 0, "comments" : " "}
+}'::json

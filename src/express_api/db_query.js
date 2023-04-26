@@ -194,8 +194,30 @@ const updateAppt = (request, response) => {
   })
 }
 
+const updateApptStep = (request, response) => {
+  const req_body = request.body;
+  console.log(`query req body:`, req_body);
+  // console.log(JSON.stringify(req_body.stepjson));
+  pool.query(`UPDATE sms.appointments SET stepjson = $2 WHERE id = $1`,[req_body.id, JSON.stringify(req_body.stepjson)], (error, results) => {
+    if (error) {
+      // console.log(`query results error: `, error )
+    }
+    if ( results ) {
+    // console.log(`query results rows: `, results )
+    response.status(200).json(results.rows)
+    }
+  })
+}
+
 const getTodaysAppts = (request, response) => {
   const req_body = request.body;
+  var searchValue;
+  var searchColumn;
+
+  if(req_body.id) {
+    searchValue = req_body.id;
+    searchColumn = 'id';
+  }
   // console.log(`query req body:`, req_body);
   pool.query(`SELECT * FROM sms.appointments WHERE datetime::date = now()::date`, (error, results) => {
     if (error) {
@@ -221,6 +243,27 @@ const getAllAppts = (request, response) => {
     }
   })
 }
+const getAppt = (request, response) => {
+  const req_body = request.body;
+  // console.log(`query req body:`, req_body);
+  var searchValue;
+  var searchColumn;
+
+  if (req_body.id) {
+    searchValue = req_body.id;
+    searchColumn = 'id';
+  }
+
+  pool.query(`SELECT * FROM sms.appointments WHERE ${searchColumn}=$1`, [searchValue], (error, results) => {
+    if (error) {
+      // console.log(`query results error: `, error )
+    }
+    if ( results ) {
+    // console.log(`query results rows: `, results )
+    response.status(200).json(results.rows)
+    }
+  })
+}
 
 module.exports = {
   getUsers,
@@ -234,6 +277,8 @@ module.exports = {
   deleteUser,
   createAppt,
   updateAppt,
+  updateApptStep,
   getTodaysAppts,
-  getAllAppts
+  getAllAppts,
+  getAppt
 }

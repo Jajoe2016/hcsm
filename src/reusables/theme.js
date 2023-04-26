@@ -14,6 +14,10 @@ const theme = createTheme({
       darker: '#ce954b',
       contrastText: '#000000',
     },
+    bgs: {
+      main: '#cfcfcf',
+      darker: '#a9a9a9',
+    },
   },
 });
 

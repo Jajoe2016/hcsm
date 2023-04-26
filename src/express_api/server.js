@@ -23,8 +23,10 @@ app.get('/getusers', function (req, res) { db_query.getUsers(req, res) })
 app.get('/getpatients', function (req, res) { db_query.getPatients(req, res) })
 app.post('/createappt', function (req, res) { db_query.createAppt(req, res) } )
 app.post('/updateappt', function (req, res) { db_query.updateAppt(req, res) } )
+app.post('/updateapptstep', function (req, res) { db_query.updateApptStep(req, res) } )
 app.get('/gettodayappts', function (req, res) { db_query.getTodaysAppts(req, res) } )
 app.get('/getallappts', function (req, res) { db_query.getAllAppts(req, res) } )
+app.post('/getappt', function (req, res) { db_query.getAppt(req, res) } )
 app.post('/updateuser', function (req, res) {db_query.updateUser(req, res)})
 
 app.get('/file', function (req, res) {
